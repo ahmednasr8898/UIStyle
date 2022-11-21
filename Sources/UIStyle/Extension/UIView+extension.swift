@@ -87,3 +87,20 @@ extension UIView {
         return footerView
     }
 }
+
+//MARK: - create date picker -
+//
+@available(iOS 13.4, *)
+extension UIView {
+    func createDatePickerView(datePicker: UIDatePicker, action: Selector, datePickerMode: UIDatePicker.Mode = .date, datePickerStyle: UIDatePickerStyle = .wheels) {
+        datePicker.center = self.center
+        datePicker.date = Date()
+        datePicker.maximumDate = Date()
+        datePicker.locale = .current
+        datePicker.datePickerMode = datePickerMode
+        datePicker.preferredDatePickerStyle = datePickerStyle
+        datePicker.addTarget(self, action: action, for: .valueChanged)
+        datePicker.backgroundColor = .white
+        self.addSubview(datePicker)
+    }
+}
