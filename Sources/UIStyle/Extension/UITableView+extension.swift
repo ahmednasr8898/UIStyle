@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import PDFKit
 
 //MARK: - create no result message if table view is empty -
 //
@@ -38,6 +38,39 @@ extension UITableView {
             self.setNoResultMessage(title: title)
         }else{
             self.clearBackground()
+        }
+    }
+}
+
+
+//MARK: - create pdf from table view -
+//
+extension UITableView {
+    func exportAsPdfFromTable() -> String {
+        
+        let originalBounds = self.bounds
+        self.bounds = CGRect(x:originalBounds.origin.x, y: originalBounds.origin.y, width: self.contentSize.width, height: self.contentSize.height)
+        let pdfPageFrame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.contentSize.height)
+        
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, pdfPageFrame, nil)
+        UIGraphicsBeginPDFPageWithInfo(pdfPageFrame, nil)
+        guard let pdfContext = UIGraphicsGetCurrentContext() else { return "" }
+        self.layer.render(in: pdfContext)
+        UIGraphicsEndPDFContext()
+        self.bounds = originalBounds
+        return self.saveTablePdf(data: pdfData)
+    }
+    
+    func saveTablePdf(data: NSMutableData) -> String {
+        
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let docDirectoryPath = paths[0]
+        let pdfPath = docDirectoryPath.appendingPathComponent("InfoDetails.pdf")
+        if data.write(to: pdfPath, atomically: true) {
+            return pdfPath.path
+        } else {
+            return ""
         }
     }
 }

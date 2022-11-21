@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PDFKit
 
 //MARK: - animation with view
 //
@@ -102,5 +103,32 @@ extension UIView {
         datePicker.addTarget(self, action: action, for: .valueChanged)
         datePicker.backgroundColor = .white
         self.addSubview(datePicker)
+    }
+}
+
+
+//MARK: - create pdf from view -
+//
+extension UIView {
+    func exportAsPdfFromView() -> String {
+        let pdfPageFrame = self.bounds
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, pdfPageFrame, nil)
+        UIGraphicsBeginPDFPageWithInfo(pdfPageFrame, nil)
+        guard let pdfContext = UIGraphicsGetCurrentContext() else { return "" }
+        self.layer.render(in: pdfContext)
+        UIGraphicsEndPDFContext()
+        return self.saveViewPdf(data: pdfData)
+    }
+    
+    func saveViewPdf(data: NSMutableData) -> String {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let docDirectoryPath = paths[0]
+        let pdfPath = docDirectoryPath.appendingPathComponent("ViewDetails.pdf")
+        if data.write(to: pdfPath, atomically: true) {
+            return pdfPath.path
+        } else {
+            return ""
+        }
     }
 }
