@@ -110,7 +110,7 @@ extension UIView {
 //MARK: - create pdf from view -
 //
 extension UIView {
-    func exportAsPdfFromView() -> String {
+    public func exportAsPdfFromView() -> String {
         let pdfPageFrame = self.bounds
         let pdfData = NSMutableData()
         UIGraphicsBeginPDFContextToData(pdfData, pdfPageFrame, nil)

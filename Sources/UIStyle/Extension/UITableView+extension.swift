@@ -46,7 +46,7 @@ extension UITableView {
 //MARK: - create pdf from table view -
 //
 extension UITableView {
-    func exportAsPdfFromTable() -> String {
+    public func exportAsPdfFromTable() -> String {
         
         let originalBounds = self.bounds
         self.bounds = CGRect(x:originalBounds.origin.x, y: originalBounds.origin.y, width: self.contentSize.width, height: self.contentSize.height)
