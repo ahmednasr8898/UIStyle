@@ -92,7 +92,7 @@ extension UIView {
 //
 @available(iOS 13.4, *)
 extension UIView {
-    func createDatePickerView(datePicker: UIDatePicker, action: Selector, datePickerMode: UIDatePicker.Mode = .date, datePickerStyle: UIDatePickerStyle = .wheels) {
+    public func createDatePickerView(datePicker: UIDatePicker, action: Selector, datePickerMode: UIDatePicker.Mode = .date, datePickerStyle: UIDatePickerStyle = .wheels) {
         datePicker.center = self.center
         datePicker.date = Date()
         datePicker.maximumDate = Date()
